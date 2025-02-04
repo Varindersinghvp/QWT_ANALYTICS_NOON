@@ -8,3 +8,4 @@ sources:
          - name: raw_customers
          - name: raw_products
          - name: raw_orders
+         - name : raw_orderdetails 
