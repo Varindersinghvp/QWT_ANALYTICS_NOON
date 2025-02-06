@@ -9,3 +9,5 @@ sources:
          - name: raw_products
          - name: raw_orders
          - name : raw_orderdetails 
+         - name: RAW_EMPLOYEES
+         - name: raw_offices
