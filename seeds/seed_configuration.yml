@@ -8,3 +8,7 @@ seeds:
   - name: lkp_categories
     config:
       schema: LOOKUP_DEV      
+      
+  - name: lkp_shippers
+    config:
+      schema: LOOKUP_DEV   

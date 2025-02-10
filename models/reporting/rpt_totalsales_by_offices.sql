@@ -8,4 +8,5 @@ avg(a.margin) as avg_margin
 from {{ref("fact_orders")}} a
 inner join {{ref("dim_customers")}} b on a.customerid=b.customerid
 inner join  {{ref("dim_employees")}} c on a.employeeid=c.empid
+where c.country= '{{var('v_country','Sweden')}}'
 group by 1,2,3
