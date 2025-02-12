@@ -40,5 +40,5 @@ models:
 
 vars:
   v_country: 'USA'
-
+  "dbt_date:time_zone": "Asia/kolkota"
   
