@@ -14,7 +14,7 @@ def is_holiday(holiday_date):
 
 def model(dbt, session):
 
-    dbt.config(materialized = 'table', schema='reporting_dev', packages=["holidays"])
+    dbt.config(materialized = 'table', schema='reporting_dev', packages=["holidays"], pre_hook='use warehouse PYTHON_MODELS_WH;')
     
     dim_customers_df = dbt.ref('dim_customers')
     fct_orders_df  = dbt.ref('fact_orders')
