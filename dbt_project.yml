@@ -36,19 +36,23 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  +materialized: table
 
   +pre-hook:
      - "insert into auditing_dev.auditing_qwt_models (modelname,starttime,endtime,duration) values('{{this}}',current_timestamp(),null,null);"
   +post-hook:
      - "update auditing_dev.auditing_qwt_models set endtime=current_timestamp(),duration=datediff('second',starttime,current_timestamp()) where modelname='{{this}}';"
 
+  dq_tools:
+    schema: AUDITING_DEV
+
 on-run-start: "alter session set timezone = 'Asia/Kolkata';"
-on-run-end: "Grant select on table QWT_ANALYTICS_DEV.auditing_dev.auditing_qwt_models to role sysadmin;"
+
+on-run-end: "{{ dq_tools.store_test_results(results) }}"
 
 vars:
   v_country: 'USA'
   "dbt_date:time_zone": "Asia/kolkata"
+  dbt_dq_tool_schema: AUDITING_DEV
 
 seeds:
   +pre-hook: "create or replace table QWT_ANALYTICS_DEV.LOOKUP_DEV.LKP_SHIPPERS_clone clone QWT_ANALYTICS_DEV.LOOKUP_DEV.LKP_SHIPPERS;"

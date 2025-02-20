@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: stg_customers
+    columns:
+      - name: CUSTOMERID
+        tests:
+          - unique
+          - not_null
+          - is_even
+
+  - name: stg_products
+    columns:
+      - name: productid
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_employees
+    columns:
+      - name: empid
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_shipments
+    columns:
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['returned', 'shipped', 'ordered','replaced']
+
+  - name: stg_orderdetails
+    columns:
+      - name: ORDERID
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: ORDERID
+
+  - name: stg_orders
+    columns:
+      - name: ORDERID
+        tests:
+          - relationships:
+              to: ref('stg_shipments')
+              field: ORDERID
+
+  - name: stg_offices
+    columns:
+      - name: Officeid
+        tests:
+          - is_even
