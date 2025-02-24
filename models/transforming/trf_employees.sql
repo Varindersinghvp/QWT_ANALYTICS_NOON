@@ -1,4 +1,4 @@
-{{config(materialized='table' , schema='transforming_dev')}}
+{{config(materialized='table' , schema=env_var('DBT_TRANSFORMSCHEMA','transforming_dev') )}}
 
 with recursive managers 
       (indent,office_id, employee_id,employee_name, employee_title, manager_id,manager_name, manager_title) 

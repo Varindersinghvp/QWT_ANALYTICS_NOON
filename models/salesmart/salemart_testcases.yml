@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: dim_products
+    description : Unique identifier for each PRODUCTID
+    columns:
+      - name: PRODUCTID
+        tests:
+          - unique

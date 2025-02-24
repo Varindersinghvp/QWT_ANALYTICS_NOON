@@ -1,0 +1,17 @@
+version: 2
+
+exposures:
+
+  - name: rpt_sales_by_offices
+    type: dashboard
+    maturity: high
+    url: https://www.google.com
+    description: "Total sales Data"
+
+    depends_on:
+      - ref('fact_orders')
+      - ref('dim_employees')
+
+    owner:
+      name: QWTAdmin
+      email: qwt@gmail.com

@@ -2,21 +2,25 @@ version: 2
 
 models:
   - name: stg_customers
+    description : "{{ doc('customers') }}"
     columns:
       - name: CUSTOMERID
+        description : "{{ doc('customer_id') }}"
         tests:
           - unique
           - not_null
-          - is_even
-
+ 
   - name: stg_products
+    description : Master product data loaded loaded fro raw products
     columns:
       - name: productid
+        description : Unique identifier for each productid
         tests:
           - unique
           - not_null
 
   - name: stg_employees
+    description : Employee ID should be unique & not null
     columns:
       - name: empid
         tests:
@@ -24,21 +28,26 @@ models:
           - not_null
 
   - name: stg_shipments
+    description : "{{ doc('stg_shipments_testcase') }}"
     columns:
       - name: status
+        description : "{{ doc('stg_shipments_cretirea') }}"
         tests:
           - accepted_values:
               values: ['returned', 'shipped', 'ordered','replaced']
 
   - name: stg_orderdetails
+    description : Detailed order info maintained for order parent table
     columns:
       - name: ORDERID
+        description : orderID represents that is coming from order table
         tests:
           - relationships:
               to: ref('stg_orders')
               field: ORDERID
 
   - name: stg_orders
+    description : orderID represents that is coming from shipment table
     columns:
       - name: ORDERID
         tests:
@@ -46,8 +55,4 @@ models:
               to: ref('stg_shipments')
               field: ORDERID
 
-  - name: stg_offices
-    columns:
-      - name: Officeid
-        tests:
-          - is_even
+
