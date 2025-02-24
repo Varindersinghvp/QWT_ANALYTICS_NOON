@@ -2,7 +2,7 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'my_new_project'
+name: 'QWT_ANALYTICS_NOON'
 version: '1.0.0'
 config-version: 2
 
@@ -36,7 +36,23 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  my_new_project:
-    # Applies to all files under models/example/
-    example:
-      +materialized: table
+
+  +pre-hook:
+     - "insert into {{env_var('DBT_QWTDB','QWT_ANALYTICS_DEV')}}.{{env_var('DBT_AUDITSCHEMA','AUDITING_DEV')}}.auditing_qwt_models (modelname,starttime,endtime,duration) values('{{this}}',current_timestamp(),null,null);"
+  +post-hook:
+     - "update {{env_var('DBT_QWTDB','QWT_ANALYTICS_DEV')}}.{{env_var('DBT_AUDITSCHEMA','AUDITING_DEV')}}.auditing_qwt_models set endtime=current_timestamp(),duration=datediff('second',starttime,current_timestamp()) where modelname='{{this}}';"
+
+  dq_tools:
+    schema: "{{env_var('DBT_AUDITSCHEMA','AUDITING_DEV')}}"
+
+on-run-start: "alter session set timezone = 'Asia/Kolkata';"
+
+on-run-end: "{{ dq_tools.store_test_results(results) }}"
+
+vars:
+  v_country: 'USA'
+  "dbt_date:time_zone": "Asia/kolkata"
+  dbt_dq_tool_schema: "{{env_var('DBT_AUDITSCHEMA','AUDITING_DEV')}}"
+
+seeds:
+  +pre-hook: "create or replace table QWT_ANALYTICS_DEV.LOOKUP_DEV.LKP_SHIPPERS_clone clone QWT_ANALYTICS_DEV.LOOKUP_DEV.LKP_SHIPPERS;"
