@@ -1,4 +1,4 @@
-{{config(materialized='view', schema='salesmart_dev' )}}
+{{config(materialized='view', schema=env_var('DBT_SALESMARTSCHEMA','SALESMART_DEV') )}}
 
 select 
 *
